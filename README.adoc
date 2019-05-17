@@ -1,0 +1,37 @@
+firewalld_ext
+-------------
+
+A collection of Ansible firewalld modules.
+
+firewalld_zone
+~~~~~~~~~~~~~~
+
+The firewalld_zone Ansible module configures firewalld zones.
+
+Example Playbook
+^^^^^^^^^^^^^^^^
+
+[source,yaml]
+-----------------------------------
+---
+- name: Configure firewalld zones
+  hosts: localhost
+  gather_facts: false
+  roles:
+  - firewalld_ext
+
+  tasks:
+  - name: Create firewalld zone db
+    firewalld_zone:
+      zone: db
+
+  - name: Delete firewalld zone app
+    firewalld_zone:
+      zone: app
+      state: absent
+-----------------------------------
+
+Author
+~~~~~~
+
+Johnathan Kupferer <jkupfere@redhat.com>
