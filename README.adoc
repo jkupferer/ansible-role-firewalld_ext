@@ -20,18 +20,24 @@ Example Playbook
   roles:
   - firewalld_ext
 
-  tasks:
-  - name: Create firewalld zone db
-    firewalld_zone:
-      zone: db
+  EXAMPLES = '''
+  - name: Define custom firewalld service
+    firewalld_service:
+      service: clients
+      port: 8400
+      protocol: tcp
+      description: "Test Protocol"
+      short_description: Test
 
-  - name: Delete firewalld zone app
-    firewalld_zone:
-      zone: app
+  - name: Remove custom firewalld service
+    firewalld_service:
+      service: database
       state: absent
+  '''
 -----------------------------------
 
 Author
 ~~~~~~
 
 Johnathan Kupferer <jkupfere@redhat.com>
+Lee Thomas <lethomas@redhat.com>

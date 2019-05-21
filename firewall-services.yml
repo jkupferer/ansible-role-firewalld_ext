@@ -1,0 +1,24 @@
+---
+- name: Configure firewalld Services
+  hosts: localhost
+  gather_facts: false
+  become: yes
+  roles:
+  - firewalld_ext
+
+  tasks:
+  - name: Create firewalld service db
+    firewalld_service:
+      service: db
+      port: 8500
+      protocol: tcp
+      state: present
+      description: "Test Port3"
+      short_description: test6
+
+  - name: Delete firewalld service app
+    firewalld_service:
+      service: db
+      state: absent
+      port: 8400
+      protocol: tcp
