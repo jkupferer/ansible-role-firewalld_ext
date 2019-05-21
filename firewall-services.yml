@@ -7,14 +7,14 @@
   - firewalld_ext
 
   tasks:
-#  - name: Create firewalld service db
-#    firewalld_service:
-#      service: db
-#      port: 8400
-#      protocol: tcp
-#      state: present
-#      description: "Test Port3"
-#      short_description: test6
+  - name: Create firewalld service db
+    firewalld_service:
+      service: db
+      port: 8500
+      protocol: tcp
+      state: present
+      description: "Test Port3"
+      short_description: test6
 
   - name: Delete firewalld service app
     firewalld_service:

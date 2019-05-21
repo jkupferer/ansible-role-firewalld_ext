@@ -31,9 +31,10 @@ options:
   protocol:
     description:
     - Protocol to add/delete
-    choices: [ tcp, udp, blank]
-    - Required to create service
-    - Blank value when deleting service deletes entire service
+    choices: [ tcp, udp ]
+    default: tcp
+    Required to create service
+    Blank value when deleting service deletes entire service
   description:
     description:
     - adds/updates the description on the service
@@ -309,7 +310,7 @@ def run_module():
             },
             'state': {
                 'choices': ['present', 'absent'],
-                'required': True,
+                'required': False,
                 'default': 'present'
             },
             'service': {
@@ -323,7 +324,8 @@ def run_module():
             'protocol': {
                 'choices': ['tcp', 'udp'],
                 'type': 'str',
-                'required': False
+                'required': False,
+                'default': 'tcp'
             },
             'description': {
                 'type': 'str',
