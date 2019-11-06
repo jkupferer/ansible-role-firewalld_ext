@@ -23,6 +23,10 @@ options:
     description:
     - Firewalld zone name
     required: true
+  file:
+    description:
+     - File containing zone information
+    required: false
 requirements:
 - 'firewalld >= 0.6.2'
 author: Johnathan Kupferer <jkupfere@redhat.com>
@@ -32,6 +36,11 @@ EXAMPLES = '''
 - name: Define custom firewalld zone
   firewalld_zone:
     zone: clients
+
+- name: Define custom firewalld zone from file
+  firewalld_zone:
+    zone: clients
+    file: ./clients
 
 - name: Remove custom firewalld zone
   firewalld_zone:
@@ -59,6 +68,7 @@ class FirewalldZone:
         self.state = module.params['state']
         self.firewall_cmd = module.params['firewall_cmd']
         self.zone = module.params['zone']
+        self.file = module.params['file']
 
     def run_firewall_cmd(self, args, **kwargs):
         check_rc = True
@@ -93,13 +103,24 @@ class FirewalldZone:
         if self.module.check_mode:
             return
 
-        (return_code, stdout, stderr) = self.run_firewall_cmd(
-            [
-                '--permanent',
-                '--new-zone=' + self.zone
-            ],
-            check_rc=True
-        )
+        if not self.zone: 
+
+            (return_code, stdout, stderr) = self.run_firewall_cmd(
+                [
+                    '--permanent',
+                    '--new-zone=' + self.zone
+                ],
+                check_rc=True
+            )
+        else:
+            (return_code, stdout, stderr) = self.run_firewall_cmd(
+                [
+                    '--permanent',
+                    '--new-zone-from-file=' + self.file
+                ],
+                check_rc=True
+            )
+
 
     def delete(self):
         (return_code, stdout, stderr) = self.run_firewall_cmd(
@@ -145,6 +166,10 @@ def run_module():
             'zone': {
                 'type': 'str',
                 'required': True
+            },
+            'file': {
+                'type: 'str',
+                'required': False
             }
         },
         supports_check_mode=True
